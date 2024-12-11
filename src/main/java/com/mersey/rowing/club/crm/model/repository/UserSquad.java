@@ -14,22 +14,21 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 public class UserSquad {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
-    private Long id;
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @Column(name = "id")
+  private Long id;
 
-    @Column(name = "user_id")
-    private Long userId;
+  @Column(name = "user_id")
+  private Long userId;
 
-    @Column(name = "squad", columnDefinition = "ENUM('WOMENS', 'DEVELOPMENT', 'MENS')")
-    @Enumerated(EnumType.STRING)
-    private Squad squad;
+  @Column(name = "squad", columnDefinition = "ENUM('WOMENS', 'DEVELOPMENT', 'MENS')")
+  @Enumerated(EnumType.STRING)
+  private Squad squad;
 
-    @Column(
-            name = "level",
-            columnDefinition = "ENUM('DEVELOPMENT', 'NOVICE', 'INTERMEDIATE', 'SENIOR')")
-    @Enumerated(EnumType.STRING)
-    private RowerLevel level;
+  @Column(
+      name = "level",
+      columnDefinition = "ENUM('DEVELOPMENT', 'NOVICE', 'INTERMEDIATE', 'SENIOR')")
+  @Enumerated(EnumType.STRING)
+  private RowerLevel level;
 }
-

@@ -14,21 +14,18 @@ import org.springframework.web.bind.annotation.*;
 @Slf4j
 public class RegistrationController {
 
-    private final UserRepository userRepository;
-    private final PasswordEncoder passwordEncoder;
+  private final UserRepository userRepository;
+  private final PasswordEncoder passwordEncoder;
 
-    @PostMapping
-    public ResponseEntity<String> register(@RequestBody User user) {
-        if (!UserAuthenticationUtils.assertUserIsValidToRegister(user)) {
-            return ResponseEntity
-                    .badRequest()
-                    .body("Insufficient information provided for registration");
-        }
-
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
-        userRepository.save(user);
-        log.info("New user {} registered", user.getUsername());
-        return ResponseEntity
-                .ok("User '" + user.getUsername() + "' registered successfully");
+  @PostMapping
+  public ResponseEntity<String> register(@RequestBody User user) {
+    if (!UserAuthenticationUtils.assertUserIsValidToRegister(user)) {
+      return ResponseEntity.badRequest().body("Insufficient information provided for registration");
     }
+
+    user.setPassword(passwordEncoder.encode(user.getPassword()));
+    userRepository.save(user);
+    log.info("New user {} registered", user.getUsername());
+    return ResponseEntity.ok("User '" + user.getUsername() + "' registered successfully");
+  }
 }
