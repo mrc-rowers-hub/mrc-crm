@@ -7,7 +7,7 @@ import lombok.extern.slf4j.Slf4j;
 public class UserAuthenticationUtils {
   private static String message = "REGISTRATION DENIED: ";
 
-  public static boolean assertUserIsValidToRegister(User user) { // TODO unit test
+  public static boolean assertUserIsValidToRegister(User user) {
     if (user == null) {
       log.warn(message + "User object cannot be null");
       return false;
