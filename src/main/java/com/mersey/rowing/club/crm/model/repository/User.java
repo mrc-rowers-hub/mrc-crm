@@ -8,6 +8,7 @@ import lombok.*;
 @ToString
 @EqualsAndHashCode
 @Getter
+@Setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
