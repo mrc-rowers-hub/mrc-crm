@@ -36,7 +36,7 @@ public class RegistrationControllerTests {
 
   private static MockedStatic<UserAuthenticationUtils> mockedUtils;
 
-  public static User user = new User();
+  private static User user = new User();
 
   @BeforeEach
   void setUp() {
