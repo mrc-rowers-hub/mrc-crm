@@ -1,4 +1,4 @@
-package com.mersey.rowing.club.crm.controller;
+package com.mersey.rowing.club.crm.controller.utils;
 
 import com.mersey.rowing.club.crm.model.repository.User;
 import lombok.extern.slf4j.Slf4j;

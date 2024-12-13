@@ -28,15 +28,13 @@ import java.util.Optional;
 @ExtendWith(MockitoExtension.class)
 @AutoConfigureMockMvc
 public class RegistrationControllerTests {
+    // todo have a parent of these too
 
     @Autowired
     private MockMvc mockMvc;
 
     @Mock
     private UserRepository userRepository;
-
-    @Mock
-    private PasswordEncoder passwordEncoder;
 
     @InjectMocks
     private RegistrationController registrationController;
