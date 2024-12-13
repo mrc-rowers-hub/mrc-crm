@@ -1,9 +1,11 @@
 package com.mersey.rowing.club.crm.controller;
 
+import com.mersey.rowing.club.crm.controller.utils.UserAuthenticationUtils;
 import com.mersey.rowing.club.crm.model.repository.User;
 import com.mersey.rowing.club.crm.model.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
@@ -14,12 +16,18 @@ import org.springframework.web.bind.annotation.*;
 @Slf4j
 public class RegistrationController {
 
-  private final UserRepository userRepository;
-  private final PasswordEncoder passwordEncoder;
+  @Autowired
+  private  UserRepository userRepository;
+
+  @Autowired
+  private PasswordEncoder passwordEncoder;
 
   @PostMapping
   public ResponseEntity<String> register(@RequestBody User user) {
-    if (!UserAuthenticationUtils.assertUserIsValidToRegister(user)) {
+    if (userRepository.findByUsername(user.getUsername()).isPresent()) {
+      return ResponseEntity.badRequest().body("User already exists");
+    }
+    if (!UserAuthenticationUtils.validUsernameAndPassword(user)) {
       return ResponseEntity.badRequest().body("Insufficient information provided for registration");
     }
 
