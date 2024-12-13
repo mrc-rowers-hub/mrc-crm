@@ -36,6 +36,8 @@ public class RegistrationControllerTests {
     @Mock
     private UserRepository userRepository;
 
+    @Mock private PasswordEncoder passwordEncoder;
+
     @InjectMocks
     private RegistrationController registrationController;
 
@@ -58,7 +60,7 @@ public class RegistrationControllerTests {
     @Test
     void registerUser_validUser_registersUser() throws Exception {
         mockedUtils
-                .when(() -> UserAuthenticationUtils.validUsernameAndPassword(user))
+                .when(() -> UserAuthenticationUtils.isValidUsernameAndPassword(user))
                 .thenReturn(true);
 
         mockMvc
@@ -73,7 +75,7 @@ public class RegistrationControllerTests {
     @Test
     void registerUser_passwordMissing_returnsBadRequest() throws Exception {
         mockedUtils
-                .when(() -> UserAuthenticationUtils.validUsernameAndPassword(user))
+                .when(() -> UserAuthenticationUtils.isValidUsernameAndPassword(user))
                 .thenReturn(false);
 
         mockMvc

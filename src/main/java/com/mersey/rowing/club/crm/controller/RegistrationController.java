@@ -27,7 +27,7 @@ public class RegistrationController {
     if (userRepository.findByUsername(user.getUsername()).isPresent()) {
       return ResponseEntity.badRequest().body("User already exists");
     }
-    if (!UserAuthenticationUtils.validUsernameAndPassword(user)) {
+    if (!UserAuthenticationUtils.isValidUsernameAndPassword(user)) {
       return ResponseEntity.badRequest().body("Insufficient information provided for registration");
     }
 
