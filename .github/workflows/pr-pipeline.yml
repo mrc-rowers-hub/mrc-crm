@@ -12,6 +12,12 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Run MySQL
+        uses: hoverkraft-tech/compose-action@v2.0.1
+        with:
+          compose-file: "./docker-compose.yml"
+          up-flags: "-d mysql"
+
       - name: Cache Maven dependencies
         uses: actions/cache@v3
         with:
