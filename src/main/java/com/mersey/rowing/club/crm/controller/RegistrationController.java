@@ -1,14 +1,14 @@
 package com.mersey.rowing.club.crm.controller;
 
-import com.mersey.rowing.club.crm.controller.utils.UserAuthenticationUtils;
+import com.mersey.rowing.club.crm.controller.service.LoginService;
 import com.mersey.rowing.club.crm.model.repository.User;
-import com.mersey.rowing.club.crm.model.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Map;
 
 @RestController
 @RequestMapping("/register")
@@ -17,23 +17,18 @@ import org.springframework.web.bind.annotation.*;
 public class RegistrationController {
 
   @Autowired
-  private  UserRepository userRepository;
-
-  @Autowired
-  private PasswordEncoder passwordEncoder;
+  private LoginService loginService;
 
   @PostMapping
   public ResponseEntity<String> register(@RequestBody User user) {
-    if (userRepository.findByUsername(user.getUsername()).isPresent()) {
-      return ResponseEntity.badRequest().body("User already exists");
-    }
-    if (!UserAuthenticationUtils.isValidUsernameAndPassword(user)) {
-      return ResponseEntity.badRequest().body("Insufficient information provided for registration");
-    }
+    Map<Boolean, String> isRegistered = loginService.isNowRegistered(user);
+    Boolean registered = isRegistered.keySet().iterator().next();
+    String responseMessage = isRegistered.values().stream().findAny().get();
 
-    user.setPassword(passwordEncoder.encode(user.getPassword()));
-    userRepository.save(user);
-    log.info("New user {} registered", user.getUsername());
-    return ResponseEntity.ok("User '" + user.getUsername() + "' registered successfully");
+    if(registered){
+      return ResponseEntity.ok(responseMessage);
+    } else {
+      return ResponseEntity.badRequest().body(responseMessage);
+    }
   }
 }
