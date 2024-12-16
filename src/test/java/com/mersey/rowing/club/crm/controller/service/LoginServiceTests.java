@@ -17,6 +17,7 @@ import java.util.Map;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.mockStatic;
 import static org.mockito.Mockito.when;
 
@@ -58,12 +59,45 @@ public class LoginServiceTests {
     }
 
     @Test
-    void isNowRegistered_userAlreadyExists_returnsBadRequest()  {
+    void isNowRegistered_userAlreadyExists_returnsFalse()  {
 
         when(userRepository.findByUsername("newuser")).thenReturn(Optional.of(user));
 
         assertEquals(Map.of(false, "User already exists"), loginService.isNowRegistered(user));
 
     }
+
+    @Test
+    void isNowLoggedIn_passwordInvalid_returnsFalse(){
+        mockedUtils.when(() -> UserAuthenticationUtils.isValidUsernameAndPassword(user)).thenReturn(false);
+        assertEquals(Map.of(false, "Invalid username or password"), loginService.isNowLoggedIn(user));
+
+    }
+
+    @Test
+    void isNowLoggedIn_validRegisteredUser_returnsTrue(){
+        mockedUtils.when(() -> UserAuthenticationUtils.isValidUsernameAndPassword(user)).thenReturn(true);
+        when(userRepository.findByUsername("newuser")).thenReturn(Optional.of(user));
+        when(passwordEncoder.matches(anyString(), anyString())).thenReturn(true);
+
+        assertEquals(Map.of(true, "Login successful!"), loginService.isNowLoggedIn(user));
+
+
+    }
+    @Test
+    void isNowLoggedIn_userDoesntExist_returnsFalse(){
+        mockedUtils.when(() -> UserAuthenticationUtils.isValidUsernameAndPassword(user)).thenReturn(true);
+        when(userRepository.findByUsername("newuser")).thenReturn(Optional.empty());
+        assertEquals(Map.of(false, "Invalid username or password"), loginService.isNowLoggedIn(user));
+    }
+    @Test
+    void isNowLoggedIn_passwordMismatch_returnsFalse(){
+
+        mockedUtils.when(() -> UserAuthenticationUtils.isValidUsernameAndPassword(user)).thenReturn(true);
+        when(userRepository.findByUsername("newuser")).thenReturn(Optional.of(user));
+        when(passwordEncoder.matches(anyString(), anyString())).thenReturn(false);
+        assertEquals(Map.of(false, "Invalid username or password"), loginService.isNowLoggedIn(user));
+    }
+
 
 }
