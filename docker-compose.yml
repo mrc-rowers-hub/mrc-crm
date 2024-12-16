@@ -1,0 +1,34 @@
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: mrc-crm-mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: crm
+    ports:
+      - "3307:3306"
+    networks:
+      - mrc-network
+
+  mrc-crm:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: mrc-crm
+    ports:
+      - "8085:8085"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mrc-crm-mysql:3306/crm
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: password
+    depends_on:
+      - mysql
+    networks:
+      - mrc-network
+      - default
+
+networks:
+  mrc-network:
+    driver: bridge
+  default:
+    driver: bridge
