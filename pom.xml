@@ -91,6 +91,8 @@
 	</dependencies>
 
 	<build>
+		<finalName>mrc-crm</finalName>
+
 		<plugins>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>

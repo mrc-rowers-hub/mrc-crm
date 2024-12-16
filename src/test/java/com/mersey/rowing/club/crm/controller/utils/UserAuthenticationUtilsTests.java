@@ -3,15 +3,16 @@ package com.mersey.rowing.club.crm.controller.utils;
 import static org.junit.jupiter.api.Assertions.*;
 
 import com.mersey.rowing.club.crm.model.repository.User;
-import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 public class UserAuthenticationUtilsTests {
 
-  private static User user = new User();
+  private User user;
 
-  @BeforeAll
-  static void init() {
+  @BeforeEach
+  void init() {
+    user = new User();
     user.setUsername("newuser");
     user.setPassword("password");
   }
