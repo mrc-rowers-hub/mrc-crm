@@ -2,13 +2,12 @@ package com.mersey.rowing.club.crm.controller;
 
 import com.mersey.rowing.club.crm.controller.service.LoginService;
 import com.mersey.rowing.club.crm.model.repository.User;
+import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.Map;
 
 @RestController
 @RequestMapping("/register")
@@ -16,8 +15,7 @@ import java.util.Map;
 @Slf4j
 public class RegistrationController {
 
-  @Autowired
-  private LoginService loginService;
+  @Autowired private LoginService loginService;
 
   @PostMapping
   public ResponseEntity<String> register(@RequestBody User user) {
@@ -25,7 +23,7 @@ public class RegistrationController {
     Boolean registered = isRegistered.keySet().iterator().next();
     String responseMessage = isRegistered.values().stream().findAny().get();
 
-    if(registered){
+    if (registered) {
       return ResponseEntity.ok(responseMessage);
     } else {
       return ResponseEntity.badRequest().body(responseMessage);
