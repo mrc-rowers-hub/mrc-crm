@@ -5,33 +5,36 @@ on:
     branches: [ "main" ]
     types: [ opened, synchronize ]
 
+
 jobs:
-  build:
+  test:
     runs-on: ubuntu-latest
 
+    services:
+      mysql:
+        image: mysql:8.0
+        env:
+          MYSQL_ROOT_PASSWORD: rootpassword
+          MYSQL_DATABASE: crm  # This ensures the `crm` database is created if it doesn't exist
+        ports:
+          - 3306:3306  # Expose MySQL on port 3306
+        options: --health-cmd="mysqladmin ping --silent" --health-interval=10s --health-timeout=5s --health-retries=3
+
     steps:
-      - uses: actions/checkout@v4
+      - name: Check out code
+        uses: actions/checkout@v2
 
-      - name: Run MySQL
-        uses: hoverkraft-tech/compose-action@v2.0.1
+      - name: Set up JDK 17
+        uses: actions/setup-java@v2
         with:
-          compose-file: "./docker-compose.yml"
-          up-flags: "-d mysql"
+          java-version: '17'
 
-      - name: Cache Maven dependencies
-        uses: actions/cache@v3
-        with:
-          path: ~/.m2/repository
-          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
-          restore-keys: |
-            ${{ runner.os }}-maven-
+      - name: Build with Maven
+        run: mvn clean install -DskipTests
 
-      - name: Set up JDK 21
-        uses: actions/setup-java@v3
-        with:
-          java-version: '21'
-          distribution: 'temurin'
-
-      - name: Run Unit Tests
-        run: |
-          mvn clean test
+      - name: Run tests with Maven
+        run: mvn test
+        env:
+          SPRING_DATASOURCE_URL: jdbc:mysql://mrc-crm-mysql:3306/crm?createDatabaseIfNotExist=true  # Ensure the JDBC URL is correctly set
+          SPRING_DATASOURCE_USERNAME: root
+          SPRING_DATASOURCE_PASSWORD: rootpassword
