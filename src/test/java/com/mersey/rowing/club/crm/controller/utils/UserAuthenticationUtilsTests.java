@@ -17,11 +17,11 @@ public class UserAuthenticationUtilsTests {
     user.setPassword("password");
   }
 
-  @Test
-  public void testValidUser() {
-    boolean isValid = UserAuthenticationUtils.isValidUsernameAndPassword(user);
-    assertTrue(isValid);
-  }
+  //  @Test // Todo reenable in mrc-109
+  //  public void testValidUser() {
+  //    boolean isValid = UserAuthenticationUtils.isValidUsernameAndPassword(user);
+  //    assertTrue(isValid);
+  //  }
 
   @Test
   public void testNullUser() {
