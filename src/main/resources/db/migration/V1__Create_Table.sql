@@ -12,3 +12,8 @@ CREATE TABLE user_squads
     squad   ENUM('WOMENS', 'DEVELOPMENT', 'MENS') NOT NULL,
     level   ENUM('DEVELOPMENT', 'NOVICE', 'INTERMEDIATE', 'SENIOR') NOT NULL
 );
+
+CREATE TABLE user_creation_codes(
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  creation_code VARCHAR(36) UNIQUE NOT NULL
+);
