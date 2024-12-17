@@ -1,9 +1,13 @@
 package com.mersey.rowing.club.crm.model.repository;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 
 @Entity
 @Table(name  = "user_creation_codes")
+@Getter
+@Setter
 public class UserCreationCode {
 
 
@@ -13,21 +17,4 @@ public class UserCreationCode {
 
     @Column(name = "creation_code", unique = true, nullable = false)
     private String creationCode;
-
-    // Getters and Setters
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public String getCreationCode() {
-        return creationCode;
-    }
-
-    public void setCreationCode(String creationCode) {
-        this.creationCode = creationCode;
-    }
 }
