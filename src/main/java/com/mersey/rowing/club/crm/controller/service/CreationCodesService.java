@@ -19,7 +19,7 @@ public class CreationCodesService {
         List<String> creationCodes = new ArrayList<>();
 
         if (amount <= 0 || amount > 30) {
-            throw new IllegalArgumentException("Amount must between 1 and 30");
+            throw new IllegalArgumentException("Amount must be between 1 and 30");
         }
 
         for (int i = 0; i < amount; i++) {
