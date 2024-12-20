@@ -18,6 +18,10 @@ public class CreationCodesService {
     public List<String> createNewUUID(int amount) {
         List<String> creationCodes = new ArrayList<>();
 
+        if (amount <= 0 || amount > 30) {
+            throw new IllegalArgumentException("Amount must between 1 and 30");
+        }
+
         for (int i = 0; i < amount; i++) {
             String uuid = UUID.randomUUID().toString();
             creationCodes.add(uuid);
