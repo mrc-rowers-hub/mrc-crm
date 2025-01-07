@@ -57,7 +57,25 @@ public class AdminControllerTests {
     }
 
     // IllegalArgumentException when amount = 0 and amount = 31
+    @Test
+    void shouldReturnBadRequestForInvalidAmountBelow() throws Exception {
+        int invalidAmount = 0;
 
+        mockMvc.perform(get("/request_new_users")
+                .param("amount", String.valueOf(invalidAmount)))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.error").value("Amount must be between 1 and 30"));
+    }
+
+    @Test
+    void shouldReturnBadRequestForInvalidAmountAbove() throws Exception {
+        int invalidAmount = 31;
+
+        mockMvc.perform(get("/request_new_users")
+                .param("amount", String.valueOf(invalidAmount)))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.error").value("Amount must be between 1 and 30"));
+    }
     // unique uuid is saved to DB
 
     // each uuid returned is unique
